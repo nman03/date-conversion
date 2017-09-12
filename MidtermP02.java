@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public class MidtermP02 {
-	private static String date;
+	private static int month, day, year;
 
 	public static void main(String[] args) {
 		// Create scanner
@@ -17,44 +17,44 @@ public class MidtermP02 {
 
 			// Prompt user to enter a date (Month/Day/Year)
 			System.out.println("Enter a date (Month/Day/Year): ");
-			date = in.next();
+			String date = in.next();
+			
+			// Split date into parts
+			month = Integer.parseInt(date.substring(0, date.indexOf('/')));
+			day = Integer.parseInt(date.substring(date.indexOf('/') + 1, date.lastIndexOf('/')));
+			year = Integer.parseInt(date.substring(date.lastIndexOf('/') + 1));
 
-		} while (!isValid(date));
+		} while (!isValid());
 
 		// Convert and Print Date
-		System.out.print("Converted Date: " + convertDate(date));
+		System.out.print("Converted Date: " + convertDate());
 	}
 
-	public static boolean isValid(String date) {
+	public static boolean isValid() {
 		int[] thirthyDayMonths = {4, 6, 9, 11};
 		
 		// Check if Month is in range [1, 12] and Year greater than 0
-		if ((Integer.parseInt(date.substring(0, date.indexOf('/'))) <= 12 &&	
-				Integer.parseInt(date.substring(0, date.indexOf('/'))) >= 1) && 
-				(Integer.parseInt(date.substring(date.lastIndexOf('/') + 1)) > 0)){
+		if (month <= 12 && month >= 1 && year > 0){
 			
 			// Check for number of days in February, including Leap Years
-			if (Integer.parseInt(date.substring(0, date.indexOf('/'))) == 2) {
-				if (Integer.parseInt(date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'))) == 29) {
-					if (Integer.parseInt(date.substring(date.lastIndexOf('/') + 1)) % 4 == 0) {
+			if (month == 2) {
+				if (day == 29) {
+					if (year % 4 == 0) {
 						return true;
 					}
-				} else if (Integer.parseInt(date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'))) <= 28 &&
-						Integer.parseInt(date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'))) >= 1) {
+				} else if (day <= 28 && day >= 1) {
 					return true;
 				}
 				
 			} 
 			
 			// Check if days are in range [1, 30] or [1, 31] for the corresponding months
-			else if (IntStream.of(thirthyDayMonths).anyMatch(x -> x == Integer.parseInt(date.substring(0, date.indexOf('/'))))) {
-				if (Integer.parseInt(date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'))) <= 30 &&
-						Integer.parseInt(date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'))) >= 1) {
+			else if (IntStream.of(thirthyDayMonths).anyMatch(x -> x == month)) {
+				if (day <= 30 && day >= 1) {
 					return true;	
 				}
 			} else {
-				if (Integer.parseInt(date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'))) <= 31 &&
-						   Integer.parseInt(date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'))) >= 1) {
+				if (day <= 31 && day >= 1) {
 					return true;
 				}	
 			}
@@ -71,14 +71,13 @@ public class MidtermP02 {
 		return monthArray;
 	}
 
-	public static String convertDate(String date) {
+	public static String convertDate() {
 		// Create Month array
 		String[] array = createMonthArray();
-
-		String convertedDate = array[Integer.parseInt(date.substring(0, date.indexOf('/'))) - 1] + 
-				" " + date.substring(date.indexOf('/') + 1, date.lastIndexOf('/')) +
-				", " + date.substring(date.lastIndexOf('/') + 1);
-
+		
+		// Convert date
+		String convertedDate = array[month - 1] + " " + day + ", " + year;
+		
 		return convertedDate;
 	}
 }
