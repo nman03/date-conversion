@@ -1,12 +1,7 @@
-/*
-	Author: Neil Manimtim
-	Purpose: Convert dates.
- */
-
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
-public class MidtermP02 {
+public class DateConversion {
 	private static int month, day, year;
 
 	public static void main(String[] args) {
@@ -14,7 +9,6 @@ public class MidtermP02 {
 		Scanner in =  new Scanner(System.in);
 
 		do {
-
 			// Prompt user to enter a date (Month/Day/Year)
 			System.out.println("Enter a date (Month/Day/Year): ");
 			String date = in.next();
